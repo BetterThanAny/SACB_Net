@@ -13,7 +13,7 @@ from natsort import natsorted
 from model import SACB_Net
 import csv
 
-os.environ["base_dir"] = '/bask/projects/d/duanj-ai-imaging/xxc/dataset_all'
+os.environ["base_dir"] = '/root/autodl-tmp'
 
 class Logger(object):
     def __init__(self, save_dir):
@@ -48,7 +48,7 @@ def main():
     g.manual_seed(0)
     setup_seed(seed=0, cuda_deterministic=False)
     k = 7 
-    dataset=['ixi', 'lpba', 'abd'][2]
+    dataset=['ixi', 'lpba', 'abd'][0]
     tag = f'{dataset}_k{k}'
     bs = 1
     weights = [1, 0.3] # loss weights [1, 3], [1, 1], [1, 0.3-0.5]
@@ -108,7 +108,7 @@ def main():
         dice_score = utils.dice_abdo
         img_size   = (192, 160, 224)
     
-    train_loader = DataLoader(dataset=train_set, batch_size=bs, shuffle=True, num_workers=8, worker_init_fn=seed_worker, generator=g)
+    train_loader = DataLoader(dataset=train_set, batch_size=bs, shuffle=True, num_workers=8, pin_memory=True, worker_init_fn=seed_worker, generator=g)
     val_loader   = DataLoader(val_set, batch_size=bs, shuffle=False, num_workers=8, pin_memory=True)
 
 
